@@ -16,5 +16,4 @@ def observer_teclado(o,s):
             o.on_completed()
             return
 
-observable = rx.create(observer_teclado)
-observable.subscribe(Printer())
+rx.create(observer_teclado).subscribe(Printer())
