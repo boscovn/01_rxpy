@@ -10,5 +10,6 @@ content = requests.get(f'http://www.omdbapi.com/', params=params)
 
 data = content.json()
 from_(data['Search']).pipe(
-    operators.filter(lambda t: t['Type'] == 'movie')
+    operators.filter(lambda t: t['Type'] == 'movie'),
+    operators.map(lambda t: f'({t["imdbID"].replace("tt","")}) - : ({t["Title"]}): {t["Poster"]} ({t["Year"]})')
 ).subscribe(Printer())
