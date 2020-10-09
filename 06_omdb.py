@@ -1,6 +1,6 @@
 import requests
 import rx
-
+from printer import Printer
 params = {
     'apikey': 'd3f6dabf',
     's': input('Película a buscar: ')
@@ -9,5 +9,7 @@ params = {
 content = requests.get(f'http://www.omdbapi.com/', params=params)
 
 data = content.json()
-print(data.items())
 #todo ejercicio
+rx.from_(data['Search']).pipe(
+
+).subscribe(Printer())
