@@ -1,14 +1,14 @@
 # Autenticación con Twitter y seguimiento con Twitter Streaming API
-from rx import create
+from rx import create, operators
 from tweepy import OAuthHandler, Stream, StreamListener
 
 from printer import Printer
 from secret import consumer_key, access_token, consumer_secret, access_token_secret
-
+import json
 
 def mi_observable(keywords):
     def observe_tweets(o, s):
-        class TweetListener(StreamListener):
+        class TweetListener (StreamListener):
             def on_data(self, data):
                 o.on_next(data)
 
@@ -24,8 +24,9 @@ def mi_observable(keywords):
     return create(observe_tweets)
 
 
-keywords = ['estado de alarma']
+keywords = ['trump']
 
 mi_observable(keywords).pipe(
-
+    operators.map(lambda txt: json.loads(txt)),
+    operators.map(lambda d: f'{d["user"]["name"]}: {d["text"]}')
 ).subscribe(Printer())
